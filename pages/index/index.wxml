@@ -1,0 +1,78 @@
+<view class="container {{isIPhoneX ? 'iphonex-padding' : ''}}">
+  <heartbeat id='heartbeat' wx:if='{{showHeartbeat}}'></heartbeat>
+
+  <!-- 未设定背景图时，使用背景色 -->
+  <view class='bcg' wx:if='{{!bcgImg}}' style='background:{{bcgColor}}'></view>
+  <!-- 使用背景图 -->
+  <image class='bcg' wx:if='{{bcgImg}}' scr='{{bcgImg}}' mode='aspectFill'></image>
+
+  <!-- 搜索城市 -->
+  <view class='search' wx:if='{{!setting.hiddenSearch}}' style='background:rgba(255,255,255,0)'>
+    <view class='wrapper'>
+      <image src='/img/search.png'></image>
+      <input placeholder='查询其他城市' placeholder-class='placeholderClass' confirm-type='search' maxlength='20' bindconfirm='commitSearch' value='{{searchText}}' disabled='{{!enableSearch}}'></input>
+    </view>
+  </view>
+
+  <!-- 天气预报 -->
+  <view class='content' style='margin-top:{{setting.hiddenSearch?20:60}}px'>
+    <view class='info'>
+      <!-- 城市 -->
+      <view class='city'>
+        <view class='name'>{{cityDatas.originalData.results[0].currentCity||'定位中'}}</view>
+        <view class='time' wx:if='{{cityDatas.updateTimeFormat}}'>{{cityDatas.updateTimeFormat}} 更新</view>
+      </view>
+      <view class='message'>{{message}}</view>
+      <!-- 温度 -->
+      <view wx:if='{{cityDatas.temperature}}' class='temp num' decode='true'>{{cityDatas.temperature}}
+        <text style='font-size:90rpx'>°</text>
+      </view>
+      <!-- 天气 -->
+      <view class='weather'>{{cityDatas.currentWeather[0].weatherDesc || '--'}}</view>
+      <!-- PM -->
+      <view class='pm' wx:if='{{cityDatas.pm.val}}'>
+        <text>{{cityDatas.pm.desc}} {{cityDatas.pm.val}}</text>
+      </view>
+    </view>
+
+    <!-- 未来三天预报 -->
+    <view class='guide' wx:if='{{cityDatas.originalData.results[0].weather_data}}'>
+      <view class='item' wx:for='{{cityDatas.originalData.results[0].weather_data}}' wx:key='{{index}}'>
+        <view class='data i'>{{index===0?'今天':item.date}}</view>
+        <view class='temperature i'>{{item.temperature}}</view>
+        <view class='weather i'>{{item.weather}}</view>
+        <view class='wind i'>{{item.wind}}</view>
+      </view>
+    </view>
+
+    <!-- 生活预报 -->
+    <view class='livingIndex' wx:if='{{cityDatas.originalData.results[0].index && !setting.hiddenIndex}}'>
+      <view class='item' wx:for='{{cityDatas.originalData.results[0].index}}' wx:key='{{index}}'>
+        <image class='icon' src='{{icons[index]}}'></image>
+        <view class='right'>
+          <view class='key'>{{item.tipt}} {{item.zs}}</view>
+          <view class='value'>{{item.des}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 开启定位权限 -->
+  <view wx:if='{{openSettingButtonShow}}' class='openSettingButton'>
+    <image src='/img/unlock.png'></image>
+    <button open-type='openSetting'></button>
+  </view>
+
+  <view class='copy'>
+    <view>数据来源 百度地图开放平台</view>
+  </view>
+
+  <!-- 目录 -->
+  <view class='menus'>
+    <image src='/img/location.png' animation='{{animationOne}}' class='menu' bindtap='menuOne' style='top:{{pos.top}}px;left:{{pos.left}}px;'></image>
+    <image src='/img/setting.png' animation='{{animationTwo}}' class='menu' bindtap='menuTwo' style='top:{{pos.top}}px;left:{{pos.left}}px;'></image>
+    <image src='/img/info.png' animation='{{animationThree}}' class='menu' bindtap='menuThree' style='top:{{pos.top}}px;left:{{pos.left}}px;'></image>
+    <image src='/img/menu.png' animation='{{animationMain}}' class='menu main' bindtap='menuMain' catchtouchmove='menuMainMove' style='top:{{pos.top}}px;left:{{pos.left}}px'></image>
+  </view>
+
+</view>
