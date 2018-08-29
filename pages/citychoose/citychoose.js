@@ -91,7 +91,7 @@ Page({
   choose(e) {
     let item = e.currentTarget.dataset.item
     let name = item.name
-    wx.redirectTo({
+    wx.reLaunch({
       url: '../../pages/index/index?changed=true&city=' + name,
     })
   },
