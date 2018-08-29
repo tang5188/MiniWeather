@@ -1,6 +1,10 @@
 {
-  "pages": [
-    "pages/index/index"
+  "pages": [    
+    "pages/index/index",
+    "pages/citychoose/citychoose",
+    "pages/setting/setting",
+    "pages/about/about",
+    "pages/systeminfo/systeminfo"
   ],
   "window": {
     "backgroundTextStyle": "dark",

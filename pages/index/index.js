@@ -29,6 +29,15 @@ Page({
     openSettingButtonShow: false,
   },
 
+  onLoad: function(options) {
+    if (options.changed == "true") {
+      this.setData({
+        cityChanged: true,
+        searchCity: options.city
+      })
+    }
+  },
+
   //生命周期函数--监听页面显示
   onShow: function() {
     //天气数据
@@ -57,7 +66,6 @@ Page({
       this.search(this.data.searchCity)
       this.setData({
         cityChanged: false,
-        searchCity: '',
       })
     }
     this.setData({
@@ -69,14 +77,18 @@ Page({
   onHide: function() {
     //保存菜单按钮在画面上的位置
     wx.setStorage({
-      key: 'pos',
+      key: 'menu_pos',
       data: this.data.pos,
     })
   },
 
   //页面相关事件处理函数--监听用户下拉动作
   onPullDownRefresh: function() {
-    this.init({});
+    if (this.data.searchCity) {
+      this.search(this.data.searchCity)
+    } else {
+      this.init({})
+    }
   },
 
   //用户点击右上角分享
@@ -121,7 +133,7 @@ Page({
   //从storage中获取前一次的菜单位置数据
   setMenuPosition() {
     wx.getStorage({
-      key: 'pos',
+      key: 'menu_pos',
       success: res => {
         console.log("------获取菜单位置数据：")
         console.log(res)
@@ -209,7 +221,16 @@ Page({
     BMap.weather({
       location: params.location,
       fail: this.fail,
-      success: this.success,
+      success: res => {
+        this.success(res)
+
+        if (!params.location) {
+          wx.setStorage({
+            key: 'localCity',
+            data: res.currentWeather[0].currentCity,
+          })
+        }
+      },
     })
   },
 
@@ -217,9 +238,10 @@ Page({
   success(data) {
     this.setData({
       openSettingButtonShow: false,
+      searchCity: data.currentWeather[0].currentCity,
     })
-    console.log("------百度返回的天气数据：")
-    console.log(JSON.stringify(data))
+    console.debug("------百度返回的天气数据：")
+    console.debug(JSON.stringify(data))
     //停止下拉
     wx.stopPullDownRefresh()
     //更新时间
@@ -234,8 +256,8 @@ Page({
       key: 'cityDatas',
       data: data,
     })
-    console.log("------处理过的天气数据：")
-    console.log(data)
+    console.debug("------处理过的天气数据：")
+    console.debug(data)
     this.setData({
       cityDatas: data
     })
@@ -420,7 +442,7 @@ Page({
     }
     let windowWidth = SYSTEMINFO.windowWidth
     let windowHeight = SYSTEMINFO.windowHeight
-    
+
     let touches = e.touches[0]
     let clientX = touches.clientX
     let clientY = touches.clientY

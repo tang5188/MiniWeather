@@ -107,7 +107,7 @@ page {
 }
 
 .city .name {
-  width: 5em;
+  width: 6em;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
