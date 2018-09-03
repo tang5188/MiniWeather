@@ -1,8 +1,8 @@
 {
-  "pages": [    
+  "pages": [
     "pages/index/index",
-    "pages/citychoose/citychoose",
     "pages/setting/setting",
+    "pages/citychoose/citychoose",
     "pages/about/about",
     "pages/systeminfo/systeminfo"
   ],

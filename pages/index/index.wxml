@@ -4,7 +4,7 @@
   <!-- 未设定背景图时，使用背景色 -->
   <view class='bcg' wx:if='{{!bcgImg}}' style='background:{{bcgColor}}'></view>
   <!-- 使用背景图 -->
-  <image class='bcg' wx:if='{{bcgImg}}' scr='{{bcgImg}}' mode='aspectFill'></image>
+  <image class='bcg' wx:if='{{bcgImg}}' src='{{bcgImg}}' mode='aspectFill'></image>
 
   <!-- 搜索城市 -->
   <view class='search' wx:if='{{!setting.hiddenSearch}}' style='background:rgba(255,255,255,0)'>
