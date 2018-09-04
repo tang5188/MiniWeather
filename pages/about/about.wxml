@@ -1,0 +1,4 @@
+<view class='content'>
+  <view class='about'>About</view>
+  <view class='url' catchtap='copy' data-url='{{url}}'>{{url}}</view>
+</view>
