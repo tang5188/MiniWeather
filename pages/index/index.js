@@ -241,7 +241,6 @@ Page({
       searchCity: data.currentWeather[0].currentCity,
     })
     console.debug("------百度返回的天气数据：")
-    console.debug(JSON.stringify(data))
     //停止下拉
     wx.stopPullDownRefresh()
     //更新时间
